@@ -1,29 +1,22 @@
-/**
- * ProfileHeader Component
- * Displays user profile photo, info, and edit profile modal
- */
-
+ 
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import useProfileStore from '../../store/client/profileStore';
-
-// ============================================
-// ProfileHeader Component
-// ============================================
+import useProfileStore from '../../store/client/profileStore'; 
+import { Camera } from 'lucide-react';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const ProfileHeader = () => {
     const { fetchProfile, user, updateProfile, loading } = useProfileStore();
-
-    // ========================================
-    // Form State for Edit Modal
-    // ========================================
+ 
     const [editFullname, setEditFullname] = useState('');
     const [editUsername, setEditUsername] = useState('');
     const [editEmail, setEditEmail] = useState('');
+    const [image, setImage] = useState('');
 
-    // ========================================
-    // Data Fetching
-    // ========================================
+
+
+ 
     useEffect(() => {
         fetchProfile();
     }, []);
@@ -36,6 +29,40 @@ const ProfileHeader = () => {
             setEditEmail(user.email || '');
         }
     }, [user]);
+
+
+    const handlePhotoChange = async (selectedFile) => {
+        if (!selectedFile) return;
+
+        const uploadPromise = async () => {
+            const formData = new FormData();
+            formData.append("image", selectedFile);
+
+            const token = localStorage.getItem('token');
+            const res = await axios.post("http://localhost:3000/api/upload", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            // Update the local image state to reflect immediately
+            setImage(res.data.imageURL);
+
+            // Update user profile with the new photo URL
+            await updateProfile({ profilePhoto: res.data.imageURL });
+            return res;
+        };
+
+        toast.promise(uploadPromise(), {
+            loading: 'Updating...',
+            success: 'Profile photo updated successfully!',
+            error: 'Failed to update profile photo.',
+        });
+    };
+
+
+
  
     // Loading State 
     if (loading || !user) {
@@ -62,12 +89,20 @@ const ProfileHeader = () => {
      * Save profile changes
      */
     const handleSaveProfile = async () => {
+        const savePromise = updateProfile({
+            fullname: editFullname,
+            username: editUsername,
+            email: editEmail,
+        });
+
+        toast.promise(savePromise, {
+            loading: 'Updating...',
+            success: 'Profile updated successfully!',
+            error: 'Failed to update profile.',
+        });
+
         try {
-            await updateProfile({
-                fullname: editFullname,
-                username: editUsername,
-                email: editEmail,
-            });
+            await savePromise;
             closeEditModal();
         } catch (err) {
             console.error(err);
@@ -78,15 +113,21 @@ const ProfileHeader = () => {
         <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 md:p-8 mb-6 border border-gray-200 dark:border-gray-700 shadow-sm hover:border-gray-300 dark:hover:border-gray-600 transition">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
                 {/* Profile Photo */}
-                <div className="relative group">
+                <div className="relative group "> 
                     <img
-                        src={
-                            profilePhoto ||
-                            'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'
-                        }
+                        src={image || profilePhoto || 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'}
                         alt="Profile"
-                        className="w-32 h-32 rounded-full object-cover border-4 border-indigo-500 shadow-lg shadow-indigo-500/20"
-                    />
+                        className=" w-32 h-32 rounded-full object-cover border-4 border-indigo-500 shadow-lg shadow-indigo-500/20"
+                    /> 
+                    <div className="absolute bottom-0 right-0 text-indigo-500 cursor-pointer">
+                         <label htmlFor="profileImage" className="cursor-pointer"> <Camera /> </label>
+                         <input  id="profileImage" type="file"  accept="image/*" className="hidden" 
+                         onChange={(e) => {
+                          const selectedFile = e.target.files[0];
+                          if (selectedFile) handlePhotoChange(selectedFile);
+                         }}/>
+                    
+                    </div>
                 </div>
 
                 {/* Profile Info */}

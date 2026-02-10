@@ -13,9 +13,10 @@ const {
     bookmark,
     getBookmarks,
     removeBookmark,
-    clearBookmarks
+    clearBookmarks,
+    cloudinaryConfig
 } = require('../controller/userController');
-
+const xyz = require('../middleware/image/cloudinary');
 
 // Middleware Imports
 const { SignupValidator, LoginValidator } = require('../middleware/validator/AuthValidator');
@@ -47,5 +48,9 @@ Router.post('/bookmark', JWT_Verify, bookmark);
 Router.get('/bookmarks', JWT_Verify, getBookmarks);
 Router.delete('/bookmark/:bookmarkId', JWT_Verify, removeBookmark);
 Router.delete('/bookmarks', JWT_Verify, clearBookmarks);
+
+
+//Cloudinary route
+Router.post('/upload', JWT_Verify, xyz.single('image'),cloudinaryConfig);
 
 module.exports = Router;

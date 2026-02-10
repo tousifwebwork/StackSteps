@@ -3,7 +3,7 @@ const Question = require('../models/questionDB');
 const Progress = require('../models/progressDB');
 const User = require('../models/authDB');
 const Feedback = require('../models/feedbackModel');
-const Bookmark = require('../models/bookmark');
+const Bookmark = require('../models/bookmark'); 
 
 
 const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;  // 24 hours in milliseconds
@@ -414,3 +414,13 @@ exports.clearBookmarks = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
+
+exports.cloudinaryConfig = async (req, res) => {
+    try {
+        res.json({imageURL: req.file ? req.file.path : null});
+    } catch (err) {
+        console.error('Cloudinary Config Error:', err);
+        res.status(500).json({ message: 'Server error' });
+    }
+}
