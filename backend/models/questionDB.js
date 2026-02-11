@@ -1,11 +1,10 @@
 
 const mongoose = require('mongoose');
-
-// Supported Technology Categories=
+ 
 const SUPPORTED_TECHNOLOGIES = ['javascript', 'nodejs', 'react', 'mongodb', 'gitgithub'];
 
 
-// Question Schema Definition
+ 
 const questionSchema = new mongoose.Schema({
     // Technology/subject category
     tech: {
@@ -35,6 +34,11 @@ const questionSchema = new mongoose.Schema({
     // The correct answer (must match one of the options)
     correctAnswer: {
         type: String,
+        required: true
+    },
+    difficulty:{
+        type: String,
+        enum: ['easy', 'medium', 'hard'],
         required: true
     }
 });
