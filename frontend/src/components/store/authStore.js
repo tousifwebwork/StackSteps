@@ -13,13 +13,15 @@ const API_URL = 'http://localhost:3000/api';
 // Auth Store
 // ============================================
 
-const useAuthStore = create((set) => ({
+const useAuthStore = create((set, get) => ({
     // ========================================
     // State
     // ========================================
     user: null,
     token: localStorage.getItem("token") || null,
     error: null,
+    role: localStorage.getItem("role") || null,
+    loading: true,
 
     // ========================================
     // Actions
@@ -51,10 +53,12 @@ const useAuthStore = create((set) => ({
             set({
                 user: response.data.user,
                 token: response.data.token,
-                error: null
+                error: null,
+                role: response.data.user.role
             });
 
             localStorage.setItem("token", response.data.token);
+            localStorage.setItem("role", response.data.user.role);
         } catch (error) {
             set({ error: error.response?.data?.message || 'Login failed' });
         }
@@ -90,8 +94,57 @@ const useAuthStore = create((set) => ({
      * Logout user and clear session
      */
     logout: () => {
-        set({ user: null, token: null, error: null });
+        set({ user: null, token: null, error: null, role: null });
         localStorage.removeItem("token");
+        localStorage.removeItem("role");
+    },
+
+    /**
+     * Restore auth state from localStorage on app mount
+     * Validates token and sets loading to false
+     */
+    restoreAuth: async () => {
+        const token = localStorage.getItem("token");
+        const role = localStorage.getItem("role");
+        
+        if (!token) {
+            set({ loading: false, user: null, token: null, role: null });
+            return;
+        }
+
+        try {
+            // Validate token with backend
+            const response = await axios.get(`${API_URL}/validate`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            
+            set({
+                user: response.data.user,
+                token: token,
+                role: response.data.user?.role || role,
+                loading: false,
+                error: null
+            });
+        } catch (error) {
+            // Token invalid, clear everything
+            localStorage.removeItem("token");
+            localStorage.removeItem("role");
+            set({ user: null, token: null, role: null, loading: false });
+        }
+    },
+
+    /**
+     * Set loading state to false (fallback if no validation endpoint)
+     */
+    initAuth: () => {
+        const token = localStorage.getItem("token");
+        const role = localStorage.getItem("role");
+        
+        if (token && role) {
+            set({ token, role, loading: false });
+        } else {
+            set({ loading: false });
+        }
     }
 }));
 

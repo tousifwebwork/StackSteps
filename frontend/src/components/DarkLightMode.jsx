@@ -9,10 +9,7 @@ const DarkLightMode = () => {
 
     return (
         <div className="bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
-            {/* Section Header */}
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
-                <span className="text-xl">🎨</span> Appearance
-            </h3>
+            
 
             {/* Theme Toggle Buttons */}
             <div className="flex gap-3">

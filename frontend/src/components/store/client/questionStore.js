@@ -24,6 +24,7 @@ const getAuthHeaders = () => ({
  * @returns {Object} Formatted question object
  */
 const mapQuestion = (q) => ({
+    _id: q._id,
     questionNo: q.questionNo,
     question: q.question,
     options: q.options || [],
