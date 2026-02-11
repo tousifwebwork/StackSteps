@@ -418,6 +418,11 @@ exports.clearBookmarks = async (req, res) => {
 
 exports.cloudinaryConfig = async (req, res) => {
     try {
+        const user = await User.findById(req.user.id);
+        if (req.file) {
+            user.imgURL = req.file.path;
+            await user.save();
+        } 
         res.json({imageURL: req.file ? req.file.path : null});
     } catch (err) {
         console.error('Cloudinary Config Error:', err);

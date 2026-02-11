@@ -50,7 +50,7 @@ const ProfileHeader = () => {
             setImage(res.data.imageURL);
 
             // Update user profile with the new photo URL
-            await updateProfile({ profilePhoto: res.data.imageURL });
+            await updateProfile({ imgURL: res.data.imageURL });
             return res;
         };
 
@@ -70,7 +70,7 @@ const ProfileHeader = () => {
     }
  
     // Destructure User Data 
-    const { profilePhoto, username, fullname, role, email, createdAt } = user;
+    const { imgURL, username, fullname, role, email, createdAt } = user;
     const joinDate = createdAt ? new Date(createdAt).toLocaleDateString() : '';
  
     // Event Handlers 
@@ -115,7 +115,7 @@ const ProfileHeader = () => {
                 {/* Profile Photo */}
                 <div className="relative group "> 
                     <img
-                        src={image || profilePhoto || 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'}
+                        src={image || imgURL || 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'}
                         alt="Profile"
                         className=" w-32 h-32 rounded-full object-cover border-4 border-indigo-500 shadow-lg shadow-indigo-500/20"
                     /> 
