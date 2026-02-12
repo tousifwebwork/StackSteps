@@ -28,6 +28,7 @@ import useAuthStore from './components/store/authStore';
 //Admin
 import Admin from './components/admin/Admin';
 import AdminUsers from './components/admin/User';
+import Adminprofile from './components/admin/Adminprofile';
 
 
 
@@ -119,6 +120,11 @@ const App = () => {
       <Route path="/admin/users" element={
         <ProtectedRoute requiredRole="admin">
           <AdminUsers />
+        </ProtectedRoute>
+      } />
+      <Route path="/admin/profile" element={
+        <ProtectedRoute requiredRole="admin">
+          <Adminprofile />
         </ProtectedRoute>
       } />
 

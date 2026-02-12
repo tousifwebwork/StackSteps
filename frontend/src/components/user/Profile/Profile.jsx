@@ -1,9 +1,4 @@
-/**
- * Profile Page Component
- * User profile page with stats, settings, and account management
- */
-
-import React from 'react';
+ 
 import Nav from '../../Nav';
 import Footer from '../../Footer';
 import ProfileHeader from './ProfileHeader';

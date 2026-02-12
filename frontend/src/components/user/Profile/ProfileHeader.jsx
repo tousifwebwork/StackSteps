@@ -78,16 +78,14 @@ const ProfileHeader = () => {
         document.getElementById('my_modal_3').showModal();
     };
 
-    /**
-     * Close the edit profile modal
-     */
+    //Close the edit profile modal
+     
     const closeEditModal = () => {
         document.getElementById('my_modal_3').close();
     };
 
-    /**
-     * Save profile changes
-     */
+    // Save profile changes
+    
     const handleSaveProfile = async () => {
         const savePromise = updateProfile({
             fullname: editFullname,
