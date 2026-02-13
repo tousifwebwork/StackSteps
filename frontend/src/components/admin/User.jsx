@@ -4,7 +4,7 @@ import AdminNav from './AdminNav';
 import Footer from '../Footer';
 import { UserStatsCards, UserSearch, UsersTable } from './userComponents';
 
-const ADMIN_URL = 'http://localhost:3000/admin';
+const ADMIN_URL = `${import.meta.env.VITE_API_URL}/admin`;
 
 const getAuthHeaders = () => ({
   headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }

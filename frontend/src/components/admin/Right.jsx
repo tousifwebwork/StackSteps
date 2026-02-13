@@ -4,7 +4,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { AdminTabs, OverviewTab, AddQuestionForm } from './rightComponents';
 
-const ADMIN_URL = 'http://localhost:3000/admin';
+const ADMIN_URL = `${import.meta.env.VITE_API_URL}/admin`;
 const SUBJECTS = [
   { key: 'javascript', label: 'JavaScript' },
   { key: 'react', label: 'React' },

@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import axios from 'axios';
 
 // API base URL
-const API_URL = 'http://localhost:3000/api';
+const API_URL = `${import.meta.env.VITE_API_URL}/api`;
 
 // Auth header helper
 const getAuthHeaders = () => {

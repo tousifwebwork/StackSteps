@@ -4,7 +4,7 @@ import DarkLightMode from '../../DarkLightMode';
 import useProfileStore from '../../store/client/profileStore';
 
 // API endpoint for time tracking
-const TIME_API = 'http://localhost:3000/api/updateTimeSpent';
+const TIME_API = `${import.meta.env.VITE_API_URL}/api/updateTimeSpent`;
 
 // Timer intervals in milliseconds
 const ONE_SECOND = 1000;  

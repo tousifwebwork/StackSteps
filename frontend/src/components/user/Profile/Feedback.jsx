@@ -5,7 +5,7 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
 // API endpoint
-const FEEDBACK_API = 'http://localhost:3000/api/feedback';
+const FEEDBACK_API = `${import.meta.env.VITE_API_URL}/api/feedback`;
  
 // FeedbackModal Component 
 
