@@ -10,7 +10,7 @@ import { Eye, EyeClosed } from 'lucide-react';
 import useAuthStore from '../store/authStore';
 
 // Hero background image
-import HERO_IMAGE from '../../assets/authbackground.avif'; 
+import HERO_IMAGE from '../../assets/authbackground.png'; 
 
 // ============================================
 // Login Component

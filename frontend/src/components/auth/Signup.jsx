@@ -10,7 +10,7 @@ import useAuthStore from '../store/authStore';
 import { useNavigate } from 'react-router-dom';
 
 // Hero background image
-const HERO_IMAGE = '/authbackground.avif'; 
+const HERO_IMAGE = '/authbackground.png'; 
 
 // Email validation regex
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
