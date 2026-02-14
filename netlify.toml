@@ -3,7 +3,9 @@
   publish = "dist"
   command = "npm run build"
 
+# SPA fallback - existing files are served automatically before this rule
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+  force = false
