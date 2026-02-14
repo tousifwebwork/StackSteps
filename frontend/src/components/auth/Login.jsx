@@ -7,10 +7,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Eye, EyeClosed } from 'lucide-react';
-import useAuthStore from '../store/authStore';
-
-// Hero background image
-import HERO_IMAGE from '../../assets/authbackground.png'; 
+import useAuthStore from '../store/authStore'; 
 
 // ============================================
 // Login Component
@@ -65,8 +62,10 @@ const Login = () => {
             <div className="w-full max-w-5xl rounded-[28px] bg-[#1c1829] text-white shadow-2xl border border-white/5 overflow-hidden grid grid-cols-1 lg:grid-cols-2">
 
                 {/* Left Side - Hero Image */}
-                <div className="relative h-full min-h-130">
-                    <img src={HERO_IMAGE} alt="Desert landscape" className="absolute inset-0 h-full w-full object-cover" />
+                <div 
+                    className="relative h-full min-h-130 bg-cover bg-center bg-no-repeat"
+                    style={{ backgroundImage: `url(/authbackground.png)` }}
+                >
                     <div className="absolute inset-0 bg-linear-to-b from-black/10 via-[#3b2d5a]/50 to-[#181125]/85" />
                     <div className="relative flex h-full flex-col px-8 py-6">
                         <div className="flex items-center justify-between gap-4">
