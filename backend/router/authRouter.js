@@ -14,7 +14,9 @@ const {
     getBookmarks,
     removeBookmark,
     clearBookmarks,
-    cloudinaryConfig
+    cloudinaryConfig,
+    validateToken,
+    getQuote
 } = require('../controller/userController');
 const xyz = require('../middleware/image/cloudinary');
 
@@ -52,5 +54,11 @@ Router.delete('/bookmarks', JWT_Verify, clearBookmarks);
 
 //Cloudinary route
 Router.post('/upload', JWT_Verify, xyz.single('image'),cloudinaryConfig);
+
+// Token validation route
+Router.get('/validate', JWT_Verify, validateToken);
+
+// Quote route
+Router.get('/quote', getQuote);
 
 module.exports = Router;

@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: stacksteps-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: MONGO_URL
+        sync: false
+      - key: SECRET_KEY
+        sync: false
+      - key: Cloud_API
+        sync: false
+      - key: Cloud_Name
+        sync: false
+      - key: Cloud_Secret
+        sync: false
+      - key: FRONTEND_URL
+        sync: false

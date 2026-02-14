@@ -429,3 +429,40 @@ exports.cloudinaryConfig = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 }
+
+// Validate JWT Token - @route GET /api/validate
+exports.validateToken = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select('-password');
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json({
+            user: {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                role: user.role
+            }
+        });
+    } catch (err) {
+        console.error('Validate Token Error:', err);
+        res.status(500).json({ message: 'Server error' });
+    }
+}
+
+// Get inspirational quote - @route GET /api/quote
+exports.getQuote = async (req, res) => {
+    const quotes = [
+        { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+        { text: "Code is like humor. When you have to explain it, it's bad.", author: "Cory House" },
+        { text: "First, solve the problem. Then, write the code.", author: "John Johnson" },
+        { text: "Experience is the name everyone gives to their mistakes.", author: "Oscar Wilde" },
+        { text: "The best error message is the one that never shows up.", author: "Thomas Fuchs" },
+        { text: "Simplicity is the soul of efficiency.", author: "Austin Freeman" },
+        { text: "Make it work, make it right, make it fast.", author: "Kent Beck" },
+        { text: "Any fool can write code that a computer can understand.", author: "Martin Fowler" }
+    ];
+    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    res.json(randomQuote);
+}
