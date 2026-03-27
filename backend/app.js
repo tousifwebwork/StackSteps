@@ -10,27 +10,39 @@ dotenv.config();
 
 const app = express();
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://tww-chatty.netlify.app",
-  process.env.FRONTEND_URL
-];
+const normalizeOrigin = (value) => value.replace(/\/$/, '');
 
-app.use(cors({
+const staticAllowedOrigins = [
+  "http://localhost:5173",
+  "https://tww-stackstep.netlify.app",
+  "https://tww-chatty.netlify.app"
+].map(normalizeOrigin);
+
+const envAllowedOrigins = (process.env.FRONTEND_URL || "")
+  .split(',')
+  .map((origin) => origin.trim())
+  .map(normalizeOrigin)
+  .filter(Boolean);
+
+const allowedOrigins = [...new Set([...staticAllowedOrigins, ...envAllowedOrigins])];
+
+const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    const normalizedOrigin = origin ? normalizeOrigin(origin) : origin;
+
+    // Allow non-browser clients (e.g., curl/postman) and exact allowlisted origins.
+    if (!normalizedOrigin || allowedOrigins.includes(normalizedOrigin)) {
       callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
+      return;
     }
+
+    callback(new Error("Not allowed by CORS"));
   },
   credentials: true
-}));
+};
 
-app.options(/.*/, cors({
-  origin: allowedOrigins,
-  credentials: true
-}));                   
+app.use(cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
 app.use(express.json());                          
 app.use(express.urlencoded({ extended: true }));  
  
