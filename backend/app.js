@@ -33,9 +33,7 @@ app.options(/.*/, cors({
 }));                   
 app.use(express.json());                          
 app.use(express.urlencoded({ extended: true }));  
-
-// Sanitize all incoming user input to prevent XSS attacks
-// This middleware sanitizes req.body, req.query, and req.params
+ 
 app.use(sanitizeMiddleware);
 
 app.use('/api', apiRouter);
