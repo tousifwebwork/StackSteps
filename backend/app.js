@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const apiRouter = require('./router/authRouter');
 const adminRoutes = require("./router/adminRouter");
+require('./connection/database');
 const cors = require('cors');
 const { sanitizeMiddleware } = require('./middleware/sanitize/sanitize');
 require('./connection/database');
@@ -9,10 +10,27 @@ dotenv.config();
 
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://tww-chatty.netlify.app",
+  process.env.FRONTEND_URL
+];
+
 app.use(cors({
-    origin: process.env.FRONTEND_URL || '*',
-    credentials: true
-}));                                
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+}));
+
+app.options("*", cors({
+  origin: allowedOrigins,
+  credentials: true
+}));                   
 app.use(express.json());                          
 app.use(express.urlencoded({ extended: true }));  
 
